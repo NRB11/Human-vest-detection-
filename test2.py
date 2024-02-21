@@ -6,7 +6,7 @@ def create_yellow_mask(image):
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     
     # Define lower and upper bounds for the yellow color
-    lower_yellow = np.array([20, 100, 100])
+    lower_yellow = np.array([20, 90, 100])
     upper_yellow = np.array([30, 255, 255])
     
     # Create a mask that selects only yellow pixels
@@ -46,7 +46,7 @@ if __name__ == "__main__":
         masked_frame = apply_mask(frame, yellow_mask)
         
         # Display the original frame and the masked frame
-        cv2.imshow("Original Frame", frame)
+        #cv2.imshow("Original Frame", frame)
         cv2.imshow("Yellow Masked Frame", masked_frame)
         
         # Check for key press
