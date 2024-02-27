@@ -2,7 +2,7 @@ import socket
 
 # Define host and port
 HOST = '172.20.10.4'  # Loopback address for localhost
-PORT = 25000        # Port to listen on
+PORT =  55711       # Port to listen on
 
 # Create a TCP socket
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
