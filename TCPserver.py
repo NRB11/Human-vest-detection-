@@ -3,7 +3,7 @@ import threading
 
 # Define host and port
 HOST = '172.20.10.4'  # Loopback address for localhost
-PORT =  55711       # Port to listen on
+PORT = 55711       # Port to listen on
 
 # List to store client sockets
 client_sockets = []
@@ -38,6 +38,18 @@ def broadcast_message(message, sender_address):
             # Handle exceptions such as disconnected clients
             print(f"Error broadcasting message: {e}")
 
+# Function to continuously receive messages from the server
+def receive_messages(client_socket):
+    while True:
+        try:
+            message = client_socket.recv(1024)
+            if not message:
+                break
+            print(message.decode())
+        except Exception as e:
+            print(f"Error receiving message: {e}")
+            break
+
 # Create a TCP socket
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
     # Bind the socket to the host and port
@@ -55,3 +67,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
         # Create a new thread to handle the client
         client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
         client_thread.start()
+
+        # Start a new thread to receive messages from the server
+        receive_thread = threading.Thread(target=receive_messages, args=(client_socket,))
+        receive_thread.start()
