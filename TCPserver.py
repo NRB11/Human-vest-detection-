@@ -20,7 +20,7 @@ def handle_client(client_socket, client_address):
             print(f"Received from {client_address}: {data.decode()}")
 
             # Send a response back to the client
-            client_socket.sendall(b"Message received!")
+            client_socket.sendall(f"Received from {client_address}: {data.decode()}")
 
 # Create a TCP socket
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
