@@ -13,7 +13,7 @@ def handle_client(client_socket, client_address):
     print(f"Connected to {client_address}")
     
     # Add client socket to the list
-    client_sockets.append(client_socket)
+    client_sockets.append((client_socket, client_address))
 
     with client_socket:
         while True:
@@ -26,13 +26,14 @@ def handle_client(client_socket, client_address):
             print(f"Received from {client_address}: {data.decode()}")
 
             # Broadcast the message to all connected clients
-            broadcast_message((client_address),(data))
+            broadcast_message(data, client_address)
 
 # Function to broadcast a message to all connected clients
-def broadcast_message(message):
-    for client_socket in client_sockets:
+def broadcast_message(message, sender_address):
+    for client_socket, client_address in client_sockets:
         try:
-            client_socket.sendall(message)
+            # Include sender's address in the message
+            client_socket.sendall(f"{sender_address}: {message}".encode())
         except Exception as e:
             # Handle exceptions such as disconnected clients
             print(f"Error broadcasting message: {e}")
