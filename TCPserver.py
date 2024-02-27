@@ -16,7 +16,7 @@ def handle_client(client_socket, client_address):
     client_sockets.append(client_socket)
 
     with client_socket:
-        while socket.connected:
+        while True:
             # Receive data from the client
             data = client_socket.recv(1024)
             if not data:
