@@ -2,7 +2,7 @@ import socket
 import threading
 
 # Define host and port
-HOST = '172.20.10.4'  # Loopback address for localhost
+HOST = '192.168.56.20'  # Loopback address for localhost
 PORT = 55711       # Port to listen on
 
 # List to store client sockets
