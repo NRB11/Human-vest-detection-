@@ -26,7 +26,7 @@ def handle_client(client_socket, client_address):
             print(f"Received from {client_address}: {data.decode()}")
 
             # Broadcast the message to all connected clients
-            broadcast_message(client_address,data)
+            broadcast_message((client_address),(data))
 
 # Function to broadcast a message to all connected clients
 def broadcast_message(message):
