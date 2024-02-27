@@ -5,12 +5,18 @@ import threading
 HOST = '172.20.10.4'  # Loopback address for localhost
 PORT =  55711       # Port to listen on
 
+# List to store client sockets
+client_sockets = []
+
 # Function to handle client connections
 def handle_client(client_socket, client_address):
     print(f"Connected to {client_address}")
+    
+    # Add client socket to the list
+    client_sockets.append(client_socket)
 
     with client_socket:
-        while True:
+        while socket.connected:
             # Receive data from the client
             data = client_socket.recv(1024)
             if not data:
@@ -19,8 +25,17 @@ def handle_client(client_socket, client_address):
             # Process received data
             print(f"Received from {client_address}: {data.decode()}")
 
-            # Send a response back to the client
-            client_socket.sendall(f"Received from {client_address}: {data.decode()}")
+            # Broadcast the message to all connected clients
+            broadcast_message(data)
+
+# Function to broadcast a message to all connected clients
+def broadcast_message(message):
+    for client_socket in client_sockets:
+        try:
+            client_socket.sendall(message)
+        except Exception as e:
+            # Handle exceptions such as disconnected clients
+            print(f"Error broadcasting message: {e}")
 
 # Create a TCP socket
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
@@ -39,4 +54,3 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
         # Create a new thread to handle the client
         client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
         client_thread.start()
-
